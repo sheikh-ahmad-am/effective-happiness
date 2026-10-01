@@ -19,8 +19,53 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.linear_model import LinearRegression
+from matplotlib.colors import LinearSegmentedColormap
 
-sns.set_theme(style="whitegrid")
+# ---- Portfolio theme (matches https://sheikh-ahmad-am.github.io/portfolio/) ----
+BG       = "#121212"   # page background
+PANEL    = "#161616"   # cards / legend panels
+TEXT     = "#ffffff"   # headings
+BODY     = "#b8b8b8"   # body copy
+MUTED    = "#828282"   # captions / ticks
+HAIRLINE = "#4e4e4e"   # dividers / spines
+LIME     = "#6fff54"   # neon accent — primary data
+LIME2    = "#a9fc83"   # light lime
+SAGE     = "#5f7f68"   # desaturated data points
+SAGE2    = "#9dc3a8"   # pale sage
+RUST     = "#c96a5e"   # muted negative
+CORAL    = "#ff6b62"   # alert negative
+DARKTXT  = "#0b120b"   # text on lime fills
+
+plt.rcParams.update({
+    "figure.facecolor": BG,
+    "axes.facecolor": BG,
+    "savefig.facecolor": BG,
+    "text.color": TEXT,
+    "axes.labelcolor": BODY,
+    "axes.titlecolor": TEXT,
+    "xtick.color": MUTED,
+    "ytick.color": MUTED,
+    "axes.edgecolor": HAIRLINE,
+    "grid.color": "#2a2a2a",
+    "grid.alpha": 0.7,
+    "font.family": "sans-serif",
+    "font.sans-serif": ["Inter", "DejaVu Sans"],
+    "axes.titlesize": 13,
+    "axes.titleweight": "bold",
+})
+
+# 10 theme-fitting region colors (lime -> sage -> neutrals -> rust)
+REGION_COLORS = [LIME, LIME2, SAGE, SAGE2, TEXT, BODY,
+                 "#66ea22", "#0ae448", RUST, MUTED]
+
+def style_legend(ax):
+    leg = ax.get_legend()
+    if leg is None:
+        return
+    leg.get_frame().set_facecolor(PANEL)
+    leg.get_frame().set_edgecolor(HAIRLINE)
+    for t in leg.get_texts():
+        t.set_color(BODY)
 
 df = pd.read_csv("../data/happiness.csv")
 LATEST = int(df["year"].max())
@@ -60,7 +105,7 @@ log(f"Worst region: {region_avg.index[-1]} ({region_avg.iloc[-1]:.3f})")
 
 fig, ax = plt.subplots(figsize=(10, 6))
 t10 = top10.iloc[::-1]
-ax.barh(t10["country"], t10["ladder_score"], color="#2a7f62")
+ax.barh(t10["country"], t10["ladder_score"], color=LIME, edgecolor=DARKTXT, linewidth=0.5)
 ax.set_xlabel("Ladder score (0-10)")
 ax.set_title(f"Top 10 happiest countries ({LATEST})")
 for i, v in enumerate(t10["ladder_score"]):
@@ -75,8 +120,16 @@ log(corr.round(3).to_string())
 
 fig, ax = plt.subplots(figsize=(9, 7))
 cm = df[FACTORS + ["ladder_score"]].corr()
-sns.heatmap(cm, annot=True, fmt=".2f", cmap="RdYlGn", vmin=-0.6, vmax=1.0,
-            square=True, ax=ax, cbar_kws={"label": "Pearson r"})
+div_cmap = LinearSegmentedColormap.from_list("wh_div", [RUST, "#2e2e2e", LIME])
+sns.heatmap(cm, annot=True, fmt=".2f", cmap=div_cmap, vmin=-0.6, vmax=1.0,
+            square=True, ax=ax, linewidths=0.5, linecolor=HAIRLINE,
+            cbar_kws={"label": "Pearson r"})
+# readable annotation text on both dark and lime cells
+for txt, val in zip(ax.texts, cm.values.ravel()):
+    txt.set_color(DARKTXT if val > 0.55 else TEXT)
+cbar = ax.collections[0].colorbar
+cbar.ax.yaxis.label.set_color(BODY)
+cbar.ax.tick_params(colors=MUTED)
 ax.set_title("Correlation matrix: happiness factors vs ladder score")
 ax.set_xticklabels([FACTOR_LABELS.get(c, c) for c in cm.columns], rotation=30, ha="right")
 ax.set_yticklabels([FACTOR_LABELS.get(c, c) for c in cm.index], rotation=0)
@@ -103,20 +156,21 @@ log(f"Strongest driver: {FACTOR_LABELS[top_factor]} ({std_coefs.iloc[0]:+.3f})")
 log("\n=== GDP component vs ladder ===")
 fig, ax = plt.subplots(figsize=(10, 6))
 regions = sorted(dL["region"].unique())
-palette = dict(zip(regions, sns.color_palette("tab10", len(regions))))
+palette = dict(zip(regions, REGION_COLORS))
 for r in regions:
     sub = dL[dL["region"] == r]
     ax.scatter(sub["gdp"], sub["ladder_score"], s=28,
-               label=r, color=palette[r], alpha=0.8, edgecolor="white",
+               label=r, color=palette[r], alpha=0.85, edgecolor=MUTED,
                linewidth=0.4)
 xs = np.linspace(dL["gdp"].min(), dL["gdp"].max(), 100)
 b, a = np.polyfit(dL["gdp"], dL["ladder_score"], 1)
-ax.plot(xs, a + b * xs, color="black", lw=1.6, ls="--",
+ax.plot(xs, a + b * xs, color=LIME, lw=1.8, ls="--",
         label=f"trend (slope {b:.2f})")
 ax.set_xlabel("GDP component (WHR explanatory contribution)")
 ax.set_ylabel("Ladder score (0-10)")
 ax.set_title(f"Wealth vs happiness ({LATEST}) — one dot per country")
 ax.legend(fontsize=8, loc="upper left", ncol=2)
+style_legend(ax)
 plt.tight_layout(); plt.savefig("../images/gdp_vs_ladder_scatter.png", dpi=120); plt.close()
 log(f"GDP-ladder Pearson r = {dL['gdp'].corr(dL['ladder_score']):.3f}")
 
@@ -136,6 +190,7 @@ for r in trend.index:
 ax.set_xlabel("Year"); ax.set_ylabel("Average ladder score")
 ax.set_title(f"Happiness trends by region, {BASE}-{LATEST}")
 ax.legend(fontsize=8, loc="center left", bbox_to_anchor=(1, 0.5))
+style_legend(ax)
 plt.tight_layout(); plt.savefig("../images/regional_trends.png", dpi=120); plt.close()
 
 # ==================================== 6. Climbers & fallers ===
@@ -158,11 +213,11 @@ biggest_faller = (fallers.iloc[0]["country"], fallers.iloc[0]["change"])
 
 fig, axes = plt.subplots(1, 2, figsize=(12, 5), sharex=False)
 c5 = climbers.iloc[::-1]
-axes[0].barh(c5["country"], c5["change"], color="#2a7f62")
+axes[0].barh(c5["country"], c5["change"], color=LIME, edgecolor=DARKTXT, linewidth=0.5)
 axes[0].set_title(f"Biggest climbers {BASE}-{LATEST}")
 axes[0].set_xlabel("Ladder change")
 f5 = fallers.iloc[::-1]
-axes[1].barh(f5["country"], f5["change"], color="#b03a2e")
+axes[1].barh(f5["country"], f5["change"], color=RUST, edgecolor=DARKTXT, linewidth=0.5)
 axes[1].set_title(f"Biggest fallers {BASE}-{LATEST}")
 axes[1].set_xlabel("Ladder change")
 for axi in axes:

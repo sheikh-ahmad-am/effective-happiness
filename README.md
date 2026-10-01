@@ -186,6 +186,8 @@ numbers, and SQL results all move together. The SQL queries use
 | `images/regional_trends.png` | Regional average ladder, 2015–2025 |
 | `images/climbers_fallers.png` | Biggest country climbers and fallers, 2015–2025 |
 
+All charts render in the portfolio dark theme (near-black `#121212`, neon-lime `#6fff54` accent, rust `#c96a5e` for negatives) to match [the author's site](https://sheikh-ahmad-am.github.io/portfolio/).
+
 ## Methods
 
 - **Panel EDA** — global average, rankings, regional means, YoY trend.
