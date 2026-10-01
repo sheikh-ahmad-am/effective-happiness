@@ -1,0 +1,108 @@
+=== Headline KPIs (2024) ===
+Global average ladder score (2024): 5.318
+Countries: 159 | Regions: 8
+
+Top 10 countries:
+       country         region  ladder_score
+       Finland Western Europe         7.854
+       Belgium Western Europe         7.850
+        Norway Western Europe         7.686
+         Malta Western Europe         7.478
+ United States  North America         7.382
+       Iceland Western Europe         7.317
+United Kingdom Western Europe         7.312
+        France Western Europe         7.287
+    Luxembourg Western Europe         7.169
+      Mongolia      East Asia         7.059
+
+Bottom 5 countries:
+    country             region  ladder_score
+Afghanistan         South Asia         2.294
+South Sudan Sub-Saharan Africa         2.930
+ Mozambique Sub-Saharan Africa         3.184
+      Congo Sub-Saharan Africa         3.338
+       Togo Sub-Saharan Africa         3.411
+
+Average ladder by region (2024):
+region
+Western Europe            7.037
+North America             6.682
+East Asia                 5.992
+Central/Eastern Europe    5.901
+Middle East               5.358
+Latin America             5.230
+South Asia                4.232
+Sub-Saharan Africa        4.175
+
+Best region: Western Europe (7.037)
+Worst region: Sub-Saharan Africa (4.175)
+
+=== Correlations with ladder score (all years) ===
+log_gdp_per_capita         0.860
+social_support             0.781
+healthy_life_expectancy    0.773
+freedom                    0.575
+generosity                 0.015
+corruption_perception     -0.660
+
+=== OLS regression: ladder ~ 6 factors (standardized) ===
+R² = 0.878  (n = 159 countries, 2024)
+Standardized coefficients (|coef| = effect of +1 SD in factor):
+  log GDP per capita       +0.380
+  social support           +0.315
+  healthy life expectancy  +0.178
+  freedom                  +0.166
+  corruption perception    -0.127
+  generosity               +0.023
+Strongest driver: log GDP per capita (+0.380)
+
+=== GDP vs ladder ===
+GDP-ladder Pearson r = 0.858
+
+=== Regional trends 2019-2024 ===
+Change in regional avg ladder, 2019 -> 2024:
+region
+Central/Eastern Europe    0.291
+East Asia                 0.112
+Middle East               0.111
+Western Europe            0.041
+Sub-Saharan Africa        0.014
+North America            -0.117
+South Asia               -0.182
+Latin America            -0.192
+
+Biggest riser: Central/Eastern Europe (+0.291)
+Biggest faller: Latin America (-0.192)
+
+=== Biggest climbers & fallers (2019 -> 2024) ===
+Top 5 climbers:
+   country                 region change
+    Serbia Central/Eastern Europe +0.909
+  Mongolia              East Asia +0.841
+   Lesotho     Sub-Saharan Africa +0.823
+    France         Western Europe +0.821
+Azerbaijan Central/Eastern Europe +0.819
+
+Top 5 fallers:
+    country             region change
+     Cyprus     Western Europe -0.961
+     Taiwan          East Asia -0.908
+       Mali Sub-Saharan Africa -0.871
+       Peru      Latin America -0.826
+El Salvador      Latin America -0.761
+
+=== GDP quartile avgs 2024 (for SQL Q5 cross-check) ===
+gdp_quartile
+Q1 (poorest)    4.035
+Q2              5.059
+Q3              5.608
+Q4 (richest)    6.604
+
+=== YoY global trend (for SQL Q6 cross-check) ===
+year
+2019    5.285
+2020    5.257
+2021    5.290
+2022    5.316
+2023    5.301
+2024    5.318
