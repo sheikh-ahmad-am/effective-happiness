@@ -1,0 +1,7 @@
+I turned my World Happiness analysis into a living project.
+
+It pulls the latest World Happiness Report data on its own (2015–2025, 197 countries right now), re-runs every KPI, chart and ranking, and pushes the refresh to GitHub. When the next report drops, the results update themselves. No stale dashboards.
+
+Best finding: social support drives happiness 3x harder than GDP (+0.464 vs +0.137 per standard deviation). Money matters. Belonging matters more.
+
+Walkthrough in the video. Code: github.com/sheikh-ahmad-am/effective-happiness

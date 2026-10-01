@@ -1,0 +1,15 @@
+file '/home/hatch/workspace/projects/effective-happiness/video/_textonly_frames/s01.png'
+duration 7.04
+file '/home/hatch/workspace/projects/effective-happiness/video/_textonly_frames/s02.png'
+duration 7.92
+file '/home/hatch/workspace/projects/effective-happiness/video/_textonly_frames/s03.png'
+duration 8.80
+file '/home/hatch/workspace/projects/effective-happiness/video/_textonly_frames/s04.png'
+duration 7.92
+file '/home/hatch/workspace/projects/effective-happiness/video/_textonly_frames/s05.png'
+duration 7.92
+file '/home/hatch/workspace/projects/effective-happiness/video/_textonly_frames/s06.png'
+duration 7.04
+file '/home/hatch/workspace/projects/effective-happiness/video/_textonly_frames/s07.png'
+duration 6.16
+file '/home/hatch/workspace/projects/effective-happiness/video/_textonly_frames/s07.png'

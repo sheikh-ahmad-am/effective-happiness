@@ -1,5 +1,7 @@
 # World Happiness Analytics 🔄 Live
 
+**Video walkthrough:** [60-second demo on LinkedIn](https://www.linkedin.com/feed/update/urn:li:ugcPost:7511301668160987137)
+
 A data-analyst project answering one question: **which country-level
 factors — wealth, social support, health, freedom — best explain national
 happiness, and which regions are rising or falling?**
