@@ -1,0 +1,5 @@
+last_data_pull: 2026-10-01 04:54 UTC
+years: 2015-2025
+rows: 1657
+content_hash: 593fe235b3630b3f
+source: https://raw.githubusercontent.com/3112aastikg/Minor-Project-World-Happiness-Report-Analysis/main/{YYYY}.csv
